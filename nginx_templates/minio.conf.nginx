@@ -1,0 +1,73 @@
+##
+# Basic Settings
+##
+
+server_tokens off;
+
+##
+# Logging Settings
+##
+
+# https://kakakakakku.hatenablog.com/entry/2019/11/25/134646
+log_format json  escape=json '{'
+	'"time": "$time_local",'
+	'"remote_addr": "$remote_addr",'
+	'"host": "$host",'
+	'"remote_user": "$remote_user",'
+	'"status": "$status",'
+	'"server_protocol": "$server_protocol",'
+	'"request_method": "$request_method",'
+	'"request_uri": "$request_uri",'
+	'"request": "$request",'
+	'"body_bytes_sent": "$body_bytes_sent",'
+	'"request_time": "$request_time",'
+	'"upstream_response_time": "$upstream_response_time",'
+	'"http_referer": "$http_referer", '
+	'"http_user_agent": "$http_user_agent",'
+	'"http_x_forwarded_for": "$http_x_forwarded_for",'
+	'"http_x_forwarded_proto": "$http_x_forwarded_proto"'
+'}';
+
+##
+# Server Settings
+##
+
+server {
+	server_name $MINIO_DOMAIN;
+	listen 80 default_server;
+
+	access_log /logs/minio/access.log combined;
+	access_log /logs/minio/access_main.log main;
+	access_log /logs/minio/access_json.log json;
+	error_log /logs/minio/error.log;
+
+	client_max_body_size 10G;
+
+	location / {
+		proxy_pass http://minio:9000;
+		proxy_set_header Host                   $host;
+		proxy_set_header X-Real-IP              $remote_addr;
+		proxy_set_header X-Forwarded-For        $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Proto      https;
+	}
+}
+
+server {
+	server_name $MINIO_CONSOLE_DOMAIN;
+	listen 80;
+
+	access_log /logs/minio-console/access.log combined;
+	access_log /logs/minio-console/access_main.log main;
+	access_log /logs/minio-console/access_json.log json;
+	error_log /logs/minio-console/error.log;
+
+	client_max_body_size 10G;
+
+	location / {
+		proxy_pass http://minio:9001;
+		proxy_set_header Host                   $host;
+		proxy_set_header X-Real-IP              $remote_addr;
+		proxy_set_header X-Forwarded-For        $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Proto      https;
+	}
+}
