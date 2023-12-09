@@ -12,6 +12,8 @@ services:
     volumes:
       - "/mnt/kiritan1:/data1"
       - "/mnt/kiritan2:/data2"
+    extra_hosts:
+      - "minio.aoirint.com:${MINIO_AOIRINT_COM_IP_ADDRESS:?}"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 30s
