@@ -15,10 +15,10 @@ services:
     extra_hosts:
       - "minio.aoirint.com:${MINIO_AOIRINT_COM_IP_ADDRESS:?}"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 30s
-      timeout: 20s
-      retries: 3
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   nginx:
     image: nginx:latest
