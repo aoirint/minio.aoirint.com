@@ -47,6 +47,8 @@ server {
 	error_log /logs/minio/error.log;
 
 	client_max_body_size 0;
+	proxy_buffering off;
+	proxy_request_buffering off;
 
 	location / {
 		proxy_pass http://minio:9000;
@@ -71,6 +73,8 @@ server {
 	error_log /logs/minio-console/error.log;
 
 	client_max_body_size 0;
+	proxy_buffering off;
+	proxy_request_buffering off;
 
 	location / {
 		proxy_pass http://minio:9001;
