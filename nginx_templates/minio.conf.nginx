@@ -46,6 +46,7 @@ server {
 	access_log /logs/minio/access_json.log json;
 	error_log /logs/minio/error.log;
 
+	ignore_invalid_headers off;
 	client_max_body_size 0;
 	proxy_buffering off;
 	proxy_request_buffering off;
@@ -74,6 +75,7 @@ server {
 	access_log /logs/minio-console/access_json.log json;
 	error_log /logs/minio-console/error.log;
 
+	ignore_invalid_headers off;
 	client_max_body_size 0;
 	proxy_buffering off;
 	proxy_request_buffering off;
