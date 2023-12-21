@@ -41,6 +41,9 @@ server {
 	server_name $MINIO_DOMAIN;
 	listen 80 default_server;
 
+	access_log /var/log/nginx/access.log json;
+	error_log /var/log/nginx/error.log;
+
 	access_log /logs/minio/access.log combined;
 	access_log /logs/minio/access_main.log main;
 	access_log /logs/minio/access_json.log json;
@@ -69,6 +72,9 @@ server {
 server {
 	server_name $MINIO_CONSOLE_DOMAIN;
 	listen 80;
+
+	access_log /var/log/nginx/access.log json;
+	error_log /var/log/nginx/error.log;
 
 	access_log /logs/minio-console/access.log combined;
 	access_log /logs/minio-console/access_main.log main;
