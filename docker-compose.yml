@@ -16,6 +16,7 @@ services:
       - "/mnt/kiritan2:/data2"
     extra_hosts:
       - "minio.aoirint.com:${MINIO_AOIRINT_COM_IP_ADDRESS:?}"
+      - "prometheus.aoirint.com:${PROMETHEUS_AOIRINT_COM_IP_ADDRESS:?}"
     healthcheck:
       test: ["CMD", "mc", "ready", "local"]
       interval: 5s
