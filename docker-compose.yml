@@ -10,18 +10,26 @@ services:
       - MINIO_SERVER_URL=${MINIO_SERVER_URL:?}
       - MINIO_BROWSER_REDIRECT_URL=${MINIO_BROWSER_REDIRECT_URL:?}
       - MINIO_PROMETHEUS_URL=${MINIO_PROMETHEUS_URL:?}
-      - MINIO_PROMETHEUS_AUTH_TOKEN=${MINIO_PROMETHEUS_AUTH_TOKEN:?}
+      - MINIO_PROMETHEUS_AUTH_TOKEN=${MINIO_PROMETHEUS_AUTH_TOKEN}
     volumes:
       - "/mnt/kiritan1:/data1"
       - "/mnt/kiritan2:/data2"
     extra_hosts:
       - "minio.aoirint.com:${MINIO_AOIRINT_COM_IP_ADDRESS:?}"
-      - "prometheus.aoirint.com:${PROMETHEUS_AOIRINT_COM_IP_ADDRESS:?}"
     healthcheck:
       test: ["CMD", "mc", "ready", "local"]
       interval: 5s
       timeout: 5s
       retries: 5
+
+  prometheus:
+    image: prom/prometheus:latest
+    restart: always
+    volumes:
+      - "./volumes/prometheus_config/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
+      - "./volumes/prometheus_data:/prometheus"
+    depends_on:
+      - minio
 
   nginx:
     image: nginx:latest
