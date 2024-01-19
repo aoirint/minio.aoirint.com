@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   minio:
-    image: minio/minio:RELEASE.2024-01-16T16-07-38Z
+    image: minio/minio:RELEASE.2024-01-18T22-51-28Z
     command: server --console-address ":9001" /data{1...2}
     restart: always
     environment:
