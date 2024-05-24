@@ -20,6 +20,11 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    logging:
+      driver: fluentd
+      options:
+        tag: docker.minio_aoirint_com.minio.{{.ID}}
+        fluentd-async: "true"
 
   prometheus:
     image: prom/prometheus:latest
@@ -29,6 +34,11 @@ services:
       - "./volumes/prometheus_data:/prometheus"
     depends_on:
       - minio
+    logging:
+      driver: fluentd
+      options:
+        tag: docker.minio_aoirint_com.prometheus.{{.ID}}
+        fluentd-async: "true"
 
   nginx:
     image: nginx:latest
@@ -45,6 +55,11 @@ services:
       - NGINX_ENVSUBST_TEMPLATE_SUFFIX=.nginx
       - MINIO_DOMAIN=${NGINX_MINIO_DOMAIN:?}
       - MINIO_CONSOLE_DOMAIN=${NGINX_MINIO_CONSOLE_DOMAIN:?}
+    logging:
+      driver: fluentd
+      options:
+        tag: docker.minio_aoirint_com.nginx.{{.ID}}
+        fluentd-async: "true"
 
   cloudflared:
     image: cloudflare/cloudflared:latest
@@ -54,3 +69,8 @@ services:
       - nginx
     environment:
       TUNNEL_TOKEN: ${CLOUDFLARED_TUNNEL_TOKEN:?}
+    logging:
+      driver: fluentd
+      options:
+        tag: docker.minio_aoirint_com.cloudflared.{{.ID}}
+        fluentd-async: "true"
