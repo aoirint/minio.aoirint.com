@@ -1,6 +1,6 @@
 services:
   minio:
-    image: minio/minio:RELEASE.2024-05-28T17-19-04Z
+    image: minio/minio:RELEASE.2024-06-06T09-36-42Z
     command: server --console-address ":9001" /data{1...2}
     restart: always
     environment:
